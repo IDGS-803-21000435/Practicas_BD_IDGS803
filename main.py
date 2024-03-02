@@ -32,6 +32,51 @@ def index():
     return render_template("index.html", form = alum_form)
 
 
+@app.route("/eliminar", methods=["GET","POST"])
+def eliminar():
+    alum_form = forms.Empleado(request.form)
+    if request.method == 'GET':
+        id = request.args.get('id')
+        alum1 = db.session.query(PracticaBD).filter(PracticaBD.id == id).first()
+        
+        
+    if request.method == 'POST':
+        id = alum_form.nombre.id
+        alum = PracticaBD.query.get(id)
+        db.session.delete(alum)
+        db.session.commit()
+        return redirect('ABC_Completo')
+    
+    return render_template("eliminar.html", form = alum_form)
+
+
+@app.route("/modificar", methods=["GET","POST"])
+def eliminar():
+    alum_form = forms.Empleado(request.form)
+    if request.method == 'GET':
+        id = request.args.get('id')
+        alum1 = db.session.query(PracticaBD).filter(PracticaBD.id == id).first()
+        alum_form.id.data = request.args.get('id')
+        alum1.nombre = alum_form.nombre.data
+        alum1.correo = alum_form.correo.data
+        alum1.telefono = alum_form.telefono.data
+        alum1.direccion = alum_form.direccion.data
+        alum1.sueldo = alum_form.sueldo.data
+        
+    if request.method == 'POST':
+        id = alum_form.id.data
+        alum1 = db.session.query(PracticaBD).filter(PracticaBD.id == id).first()
+        alum1.nombre = alum_form.nombre.data
+        alum1.correo = alum_form.correo.data
+        alum1.telefono = alum_form.telefono.data
+        alum1.direccion = alum_form.direccion.data
+        alum1.sueldo = alum_form.sueldo.data
+        db.session.commit()
+        return redirect('ABC_Completo')
+    
+    return render_template("modificar.html", form = alum_form)
+
+
 @app.route("/ABC_Completo", methods=["GET","POST"])
 def ABC_Completo():
     

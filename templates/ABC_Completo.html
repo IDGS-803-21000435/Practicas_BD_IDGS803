@@ -12,8 +12,10 @@
                 <head>
                     <tr>
                         <th>Nombre</th>
-                        <th>Apaterno</th>
                         <th>Correo</th>
+                        <th>telefono</th>
+                        <th>Direccion</th>
+                        <th>Sueldo</th>
                         <th>Eliminar</th>
                         <th>Modificar</th>
                     </tr>
@@ -26,7 +28,8 @@
                         <th>{{alum.telefono}}</th>
                         <th>{{alum.direccion}}</th>
                         <th>{{alum.sueldo}}</th>
-                        <th><a href="elimianar.html?id={{alum.id}}" class="btn btn-warning"></a></th>
+                        <th><a href="elimianar.html?id={{alum.id}}" class="btn btn-danger">Eliminar</a></th>
+                        <th><a href="modificar.html?id={{alum.id}}" class="btn btn-warning">Modificar</a></th>
                         <th></th>
                     </tr>
                     {% endfor %}
