@@ -4,12 +4,12 @@ import forms
 from flask import g
 
 from models import db
-from models import PracticaBD
-from config import DevelopmentConfig
+from models import PracticaBD, pizzaModel, clientePizzaModel
+from config import DevelopmentConfig, DevelopmentConfigPizza
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta'
-app.config.from_object(DevelopmentConfig)
+app.config.from_object(DevelopmentConfigPizza)
 
 csrf = CSRFProtect()
 
@@ -19,17 +19,55 @@ def index():
     alum_form = forms.Empleado(request.form)
     if request.method == 'POST':#and alum_form.validate()
         alum = PracticaBD(
-        nombre = alum_form.nombre.data,
-        correo = alum_form.correo.data,
-        telefono = alum_form.telefono.data,
-        direccion = alum_form.direccion.data,
-        sueldo = alum_form.sueldo.data
+            nombre = alum_form.nombre.data,
+            correo = alum_form.correo.data,
+            telefono = alum_form.telefono.data,
+            direccion = alum_form.direccion.data,
+            sueldo = alum_form.sueldo.data
         )
         
         db.session.add(alum)
         db.session.commit()
          
     return render_template("index.html", form = alum_form)
+
+
+@app.route("/indexPizza", methods=["GET","POST"])
+def indexPizza():
+    form_Pizza = forms.pizzaForm(request.form)
+    
+    if request.method == 'POST':#and alum_form.validate()
+        jamon = ''
+        champi = ''
+        pinia = ''
+        
+        if form_Pizza.jamon.data:
+            jamon += 'jamon'
+        
+        if form_Pizza.champiniones.data:
+            champi += 'champiñones'
+        
+        if form_Pizza.pinia.data:
+            pinia += 'pinia'
+        
+        pizza = pizzaModel(
+            tam = form_Pizza.tamanio.data,
+            ingredientes = jamon + " " + champi + " " + pinia,
+            No_pizzas = form_Pizza.no_pizza.data
+        )
+        
+        cliente = clientePizzaModel(
+            nombre = form_Pizza.nombreCompleto.data,
+            direccion = form_Pizza.direccion.data,
+            telefono = form_Pizza.telefono.data,
+            fecha = form_Pizza.fechaCompra.data
+        )
+        
+        db.session.add(cliente)
+        db.session.add(pizza)
+        db.session.commit()
+         
+    return render_template("indexPizza.html", formPizza = form_Pizza)
 
 
 @app.route("/eliminar", methods=["GET","POST"])
@@ -51,7 +89,7 @@ def eliminar():
 
 
 @app.route("/modificar", methods=["GET","POST"])
-def eliminar():
+def modificar():
     alum_form = forms.Empleado(request.form)
     if request.method == 'GET':
         id = request.args.get('id')

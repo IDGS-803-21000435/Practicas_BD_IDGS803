@@ -10,3 +10,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1/practica_flask_BD'
     SQLALCHEMY_TRACK_MODIFICATION = False
+    
+class DevelopmentConfigPizza(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1/practicaPizza'
+    SQLALCHEMY_TRACK_MODIFICATION = False
